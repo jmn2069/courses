@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}" />
+    <title>Course Index</title>
+</head>
+<body>
+    <h1>Add a new course</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <p{% if message.tags %} class = "{{ message.tag }}" {% endif %}>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form action='/create' method = "POST">
+        {% csrf_token %}
+        Name: <input type="text" id="name" name="name"><br>
+        Description: <input type="text" id="desc" name="desc"><br>
+        <input type="submit" value="Create" />
+        <br>
+    </form>
+    <div>
+        <h1>Courses</h1>
+        <table>
+            <thead>
+                <tr>
+                    <td>Course Name</td>
+                    <td>Description</td>
+                    <td>Date Added</td>
+                    <td>Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td>{{ course.name }}</td>
+                    <td>{{ course.desc }}</td>
+                    <td>{{ course.created_at }}</td>
+                    <td><a href="{{ course.id }}/delete"/>remove</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
